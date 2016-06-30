@@ -43,10 +43,10 @@ function update() {
 		entity.x += entity.vx;
 		entity.y += entity.vy;
 
-		if (entity.x < 0 && entity.vx < 0) { entity.vx = -entity.vx; }
 		if (entity.y < 0 && entity.vy < 0) { entity.vy = -entity.vy; }
-		if (entity.x > canvas.width - 115 && entity.vx > 0) { entity.vx = -entity.vx; }
 		if (entity.y > canvas.height - 90 && entity.vy > 0) { entity.vy = -entity.vy; }
+
+		if (entity.x > canvas.width) { entity.x = -115; }
 
 		if (!entity.nextFrame) {
 		    entity.nextFrame = Date.now() + entity.frameRate;
@@ -60,9 +60,9 @@ function update() {
 
 function addToWorld() {
     world.push({
-        x: randInt(0, canvas.width - 115),
+        x: -115,
         y: randInt(0, canvas.height - 90),
-        vx: rand(-2, 2),
+        vx: rand(1, 4),
         vy: rand(-2, 2),
         frame: randInt(0, 3),
         frameRate: randInt(100, 300)
