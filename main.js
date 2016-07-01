@@ -36,7 +36,11 @@ function render() {
 	}
 
 	context.font = "12px serif";
-    context.fillText('Count = ' + poolSize + ', FPS = ' + Math.round(averageFps) , 20, 20);
+	context.fillStyle = 'white';
+	context.fillRect(15, 5, 130, 20);
+	context.fillStyle = 'black';
+	context.strokeRect(14.5, 4.5, 130, 20);
+    context.fillText('Count = ' + poolSize + '  FPS = ' + Math.round(averageFps) , 20, 20);
 }
 
 function update() {
