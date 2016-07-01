@@ -18,7 +18,7 @@ function loadImage(url, options) {
     return image;
 }
 
-var world = [];
+var spritePool = [];
 
 function rand(min, max) {
     return min + Math.random() * (max - min);
@@ -30,16 +30,18 @@ function randInt(min, max) {
 
 function render() {
     context.clearRect(0, 0, canvas.width, canvas.height);
-    world.forEach(function(entity) {
+    for (var i = 0; i < poolSize; i++) {
+		var entity = spritePool[i];
         context.drawImage(sprite, entity.frame * 115, 0, 115, 90, entity.x, entity.y, 115, 90);
-	});
+	}
 
 	context.font = "12px serif";
-    context.fillText('Count = ' + world.length + ', FPS = ' + Math.round(averageFps) , 20, 20);
+    context.fillText('Count = ' + poolSize + ', FPS = ' + Math.round(averageFps) , 20, 20);
 }
 
 function update() {
-    world.forEach(function(entity) {
+    for (var i = 0; i < poolSize; i++) {
+		var entity = spritePool[i];
 		entity.x += entity.vx;
 		entity.y += entity.vy;
 
@@ -55,18 +57,21 @@ function update() {
 		    entity.frame = (entity.frame + 1) % 4;
 		    entity.nextFrame += entity.frameRate;
 		}
-	});
+	}
 }
 
 function addToWorld() {
-    world.push({
-        x: -115,
-        y: randInt(0, canvas.height - 90),
-        vx: rand(1, 4),
-        vy: rand(-2, 2),
-        frame: randInt(0, 3),
-        frameRate: randInt(100, 300)
-	});
+    poolSize++;
+    if (poolSize > spritePool.length) {
+        spritePool.push({
+            x: -115,
+            y: randInt(0, canvas.height - 90),
+            vx: rand(1, 4),
+            vy: rand(-2, 2),
+            frame: randInt(0, 3),
+            frameRate: randInt(100, 300)
+	    });
+    }
 }
 
 var i = 0;
@@ -78,6 +83,7 @@ var lastCalledTime;
 var fps = 0;
 var averageFps = 60;
 var smoothing = 0.9;
+var poolSize = 0;
 
 function mainloop(){
 	i++;
@@ -98,7 +104,7 @@ function mainloop(){
 		if (averageFps >= 59) {
 		    addToWorld();
 	    } else {
-			world.pop();
+			poolSize--;
 		}
 	}
 };
