@@ -92,25 +92,25 @@ var poolSize = 0;
 function mainloop(){
 	i++;
 
-    if (lastCalledTime) {
-        delta = (Date.now() - lastCalledTime)/1000;
-        lastCalledTime = Date.now();
-        fps = 1/delta;
-        averageFps = (averageFps * smoothing) + (fps * (1.0-smoothing));
-    } else {
-	    lastCalledTime = Date.now();
+  if (lastCalledTime) {
+    delta = (Date.now() - lastCalledTime)/1000;
+    lastCalledTime = Date.now();
+    fps = 1/delta;
+    averageFps = (averageFps * smoothing) + (fps * (1.0-smoothing));
+  } else {
+	  lastCalledTime = Date.now();
 	}
 
-    requestAnimFrame(mainloop);
-    update();
-    render();
-    if (i % 5 === 0) {
+  render();
+  update();
+  if (i % 5 === 0) {
 		if (averageFps >= 59) {
-		    addToWorld();
-	    } else {
+		  addToWorld();
+	  } else {
 			poolSize--;
 		}
 	}
+  requestAnimFrame(mainloop);
 };
 mainloop();
 
